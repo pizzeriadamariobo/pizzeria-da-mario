@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Pizzeria da Mario a Idice: pizze, calzoni, asporto e consegna a domicilio." />
+    <meta name="theme-color" content="#151013" />
+    <title>Pizzeria da Mario | Idice, San Lazzaro di Savena</title>
+    <style>
+      :root {
+        --ink: #151013;
+        --ink-soft: #5d4a4c;
+        --cream: #f7efeb;
+        --paper: #fffaf7;
+        --terracotta: #c93632;
+        --terracotta-dark: #8e1e26;
+        --gold: #e6a14e;
+        --sage: #625b5a;
+        --line: #e3cfca;
+        --shadow: 0 20px 50px rgba(55, 8, 12, 0.16);
+        --radius: 24px;
+      }
+
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        color: var(--ink);
+        background: var(--cream);
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        line-height: 1.55;
+      }
+      body::selection { background: #edb09f; }
+      a { color: inherit; }
+      img { max-width: 100%; display: block; }
+      button, a { -webkit-tap-highlight-color: transparent; }
+      :focus-visible { outline: 3px solid var(--gold); outline-offset: 4px; }
+
+      .skip-link {
+        position: fixed; left: 12px; top: 12px; z-index: 99;
+        padding: 10px 14px; border-radius: 999px;
+        color: var(--paper); background: var(--ink);
+        transform: translateY(-180%); transition: transform .2s ease;
+      }
+      .skip-link:focus { transform: translateY(0); }
+
+      .container { width: min(1160px, calc(100% - 40px)); margin-inline: auto; }
+      .site-header {
+        position: sticky; top: 0; z-index: 20;
+        background: rgba(247, 239, 235, .95);
+        border-bottom: 1px solid rgba(227, 207, 202, .95);
+        backdrop-filter: blur(18px);
+      }
+      .nav-wrap { min-height: 74px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+      .brand { display: inline-flex; align-items: center; gap: 11px; text-decoration: none; font-weight: 800; letter-spacing: -.03em; }
+      .brand-mark {
+        width: 44px; height: 44px; display: grid; place-items: center; flex: 0 0 auto;
+        color: var(--cream); background: var(--terracotta); border-radius: 50%;
+        font-family: Georgia, serif; font-size: 17px; font-weight: 700;
+        box-shadow: 0 4px 0 #96381f;
+      }
+      .brand-logo { width: 142px; height: 58px; display: block; object-fit: contain; border-radius: 12px; background: #fff; }
+      .brand small { display: block; color: var(--ink-soft); font-size: 10px; letter-spacing: .11em; text-transform: uppercase; }
+      .brand strong { display: block; font-family: Georgia, serif; font-size: 20px; line-height: 1.1; }
+      .nav-toggle { display: inline-grid; place-items: center; width: 44px; height: 44px; border: 1px solid var(--line); border-radius: 50%; color: var(--ink); background: var(--paper); cursor: pointer; }
+      .nav-toggle svg { width: 19px; }
+      .nav-links { display: none; position: absolute; left: 20px; right: 20px; top: 82px; padding: 12px; background: var(--paper); border: 1px solid var(--line); border-radius: 18px; box-shadow: var(--shadow); }
+      .nav-links.is-open { display: grid; }
+      .nav-links a { padding: 11px 12px; border-radius: 12px; text-decoration: none; font-size: 14px; font-weight: 700; }
+      .nav-links a:hover { color: var(--terracotta-dark); background: #f8dcd8; }
+      .nav-phone { display: none; }
+
+      .eyebrow { margin: 0 0 12px; color: var(--terracotta-dark); font-size: 11px; font-weight: 800; letter-spacing: .15em; text-transform: uppercase; }
+      h1, h2, h3 { margin: 0; font-family: Georgia, "Times New Roman", serif; line-height: 1.03; letter-spacing: -.04em; }
+      h1 { max-width: 700px; font-size: clamp(48px, 12vw, 92px); }
+      h1 em { color: var(--terracotta); font-style: normal; }
+      h2 { font-size: clamp(38px, 6vw, 65px); }
+      h3 { font-size: 25px; }
+      .lead { max-width: 600px; margin: 20px 0 0; color: var(--ink-soft); font-size: 17px; }
+      .section { padding: 92px 0; }
+      .section-heading { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: 34px; }
+      .section-heading > p { max-width: 420px; margin: 0; color: var(--ink-soft); }
+
+      .hero { overflow: hidden; padding: 70px 0 70px; color: var(--paper); background: linear-gradient(125deg, rgba(12, 8, 10, .98), rgba(93, 19, 27, .92)), repeating-linear-gradient(0deg, rgba(255,255,255,.035) 0 2px, transparent 2px 27px), repeating-linear-gradient(90deg, transparent 0 88px, rgba(255,255,255,.04) 88px 91px); }
+      .hero-grid { display: grid; gap: 44px; align-items: center; }
+      .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+      .button { display: inline-flex; align-items: center; justify-content: center; gap: 9px; min-height: 48px; padding: 12px 17px; border: 1px solid transparent; border-radius: 999px; text-decoration: none; font-size: 14px; font-weight: 800; transition: transform .2s ease, box-shadow .2s ease, background .2s ease; }
+      .button:hover { transform: translateY(-2px); box-shadow: 0 10px 22px rgba(77, 43, 27, .14); }
+      .button-primary { color: var(--paper); background: var(--terracotta); }
+      .button-primary:hover { background: var(--terracotta-dark); }
+      .button-secondary { color: var(--paper); background: transparent; border-color: rgba(255,255,255,.42); }
+      .button-light { color: var(--ink); background: var(--paper); }
+      .hero-note { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+      .mini-badge { display: inline-flex; align-items: center; gap: 7px; padding: 7px 10px; border-radius: 999px; color: #f8e9e4; background: rgba(255, 255, 255, .08); border: 1px solid rgba(255,255,255,.2); font-size: 12px; font-weight: 700; }
+      .mini-badge::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--gold); }
+
+      .photo-placeholder { position: relative; min-height: 430px; overflow: hidden; display: grid; place-items: center; padding: 24px; border: 1px solid rgba(255,255,255,.46); border-radius: 38px; background: radial-gradient(circle at 50% 54%, #e86d3d 0 12%, #a3282f 34%, transparent 35%), linear-gradient(145deg, rgba(8,5,7,.26), rgba(201,54,50,.72)), repeating-linear-gradient(0deg, rgba(255,255,255,.09) 0 2px, transparent 2px 28px), repeating-linear-gradient(90deg, transparent 0 86px, rgba(255,255,255,.07) 86px 89px), #3d1118; box-shadow: 18px 22px 0 #681b24, var(--shadow); }
+      .photo-placeholder::before { content: ""; position: absolute; inset: 18px; border: 1px dashed rgba(255,255,255,.55); border-radius: 26px; }
+      .placeholder-content { position: relative; text-align: center; color: #fff9ef; }
+      .placeholder-content .placeholder-icon { width: 74px; height: 74px; display: grid; place-items: center; margin: 0 auto 17px; border: 1px solid rgba(255,255,255,.7); border-radius: 50%; font-size: 34px; }
+      .placeholder-content strong { display: block; font-family: Georgia, serif; font-size: 31px; }
+      .placeholder-content span { display: block; margin-top: 8px; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; }
+      .photo-label { position: absolute; left: 22px; bottom: 20px; padding: 8px 11px; border-radius: 999px; color: var(--ink); background: var(--paper); font-size: 11px; font-weight: 800; }
+
+      .info-strip { position: relative; z-index: 2; margin-top: -2px; }
+      .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; overflow: hidden; border-radius: 20px; background: var(--line); box-shadow: 0 12px 30px rgba(67,39,25,.08); }
+      .info-item { min-height: 116px; padding: 20px; background: var(--paper); }
+      .info-item span { display: block; margin-bottom: 5px; color: var(--terracotta-dark); font-size: 11px; font-weight: 800; letter-spacing: .13em; text-transform: uppercase; }
+      .info-item strong, .info-item a { font-size: 16px; text-decoration: none; }
+      .info-item a { display: block; }
+      .info-item a:hover { color: var(--terracotta-dark); }
+
+      .paper-section { background: var(--paper); }
+      .menu-toolbar { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 27px; }
+      .filter-button { padding: 10px 14px; border: 1px solid var(--line); border-radius: 999px; color: var(--ink-soft); background: transparent; cursor: pointer; font: inherit; font-size: 13px; font-weight: 800; }
+      .filter-button:hover, .filter-button[aria-pressed="true"] { color: var(--paper); background: var(--ink); border-color: var(--ink); }
+      .menu-grid { display: grid; gap: 12px; }
+      .menu-card { display: flex; justify-content: space-between; gap: 18px; min-height: 93px; padding: 19px 20px; border: 1px solid var(--line); border-radius: 17px; background: rgba(255,255,255,.65); transition: border-color .2s ease, transform .2s ease; }
+      .menu-card:hover { border-color: #dfad71; transform: translateY(-2px); }
+      .menu-card[hidden] { display: none; }
+      .menu-card h3 { font-family: inherit; font-size: 16px; font-weight: 850; letter-spacing: -.01em; }
+      .menu-card p { margin: 5px 0 0; color: var(--ink-soft); font-size: 13px; line-height: 1.45; }
+      .menu-price { flex: 0 0 auto; color: var(--terracotta-dark); font-size: 16px; font-weight: 900; white-space: nowrap; }
+      .review-tag { display: block; margin-top: 6px; color: #8f5c21; font-size: 10px; font-weight: 800; text-align: right; text-transform: uppercase; letter-spacing: .04em; }
+
+      .service-grid { display: grid; gap: 14px; }
+      .service-card { padding: 24px; border-radius: var(--radius); background: #f5eadb; }
+      .service-card:nth-child(2) { background: #e9eee4; }
+      .service-card:nth-child(3) { background: #f8e1d8; }
+      .service-card:nth-child(4) { background: #f4e5c9; }
+      .service-icon { display: grid; place-items: center; width: 42px; height: 42px; margin-bottom: 31px; border-radius: 13px; color: var(--paper); background: var(--ink); font-size: 20px; }
+      .service-card h3 { font-family: inherit; font-size: 20px; font-weight: 850; letter-spacing: -.02em; }
+      .service-card p { margin: 9px 0 0; color: var(--ink-soft); font-size: 14px; }
+      .service-card strong { display: block; margin-top: 13px; font-size: 14px; }
+
+      .about-grid { display: grid; gap: 34px; align-items: center; }
+      .about-copy p { max-width: 610px; color: var(--ink-soft); font-size: 17px; }
+      .about-list { display: grid; gap: 12px; margin: 26px 0 0; padding: 0; list-style: none; }
+      .about-list li { display: flex; gap: 11px; align-items: start; color: var(--ink-soft); font-size: 14px; }
+      .about-list li::before { content: "✓"; display: grid; place-items: center; width: 21px; height: 21px; flex: 0 0 auto; border-radius: 50%; color: var(--paper); background: var(--sage); font-size: 12px; font-weight: 900; }
+      .about-art { min-height: 320px; display: grid; place-items: center; position: relative; overflow: hidden; border-radius: 36px; background: var(--ink); }
+      .about-art::before { content: ""; position: absolute; inset: -20%; background: repeating-linear-gradient(0deg, transparent 0 24px, rgba(219, 119, 77, .28) 24px 28px), repeating-linear-gradient(90deg, transparent 0 78px, rgba(219, 119, 77, .17) 78px 82px); transform: rotate(-8deg); }
+      .about-art::after { content: ""; position: absolute; width: 190px; height: 190px; border-radius: 50%; background: radial-gradient(circle, #ffc15c 0 26%, #e36f38 27% 42%, #a8412b 43% 57%, transparent 58%); box-shadow: 0 0 60px rgba(255, 176, 63, .42); }
+      .art-label { position: relative; z-index: 1; padding: 9px 12px; border-radius: 999px; color: var(--ink); background: var(--paper); font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; }
+
+      .contact { color: var(--paper); background: var(--ink); }
+      .contact .eyebrow { color: #e9ad58; }
+      .contact h2 { max-width: 650px; }
+      .contact-grid { display: grid; gap: 14px; margin-top: 35px; }
+      .contact-card { padding: 22px; border: 1px solid rgba(255,255,255,.15); border-radius: 20px; background: rgba(255,255,255,.06); }
+      .contact-card span { display: block; margin-bottom: 7px; color: #d6a164; font-size: 11px; font-weight: 800; letter-spacing: .13em; text-transform: uppercase; }
+      .contact-card p, .contact-card a { margin: 0; color: #fbefe2; font-size: 15px; text-decoration: none; }
+      .contact-card > a:not(.button) { display: block; }
+      .contact-card a:hover { color: #f3bf74; }
+      .hours { width: 100%; border-collapse: collapse; font-size: 14px; }
+      .hours td { padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,.1); }
+      .hours tr:last-child td { border-bottom: 0; }
+      .hours td:last-child { text-align: right; color: #fbefe2; }
+      .hours .closed { color: #e99b7d; }
+      .map-card { min-height: 250px; display: flex; flex-direction: column; justify-content: space-between; padding: 24px; overflow: hidden; border: 1px solid rgba(255,255,255,.15); border-radius: 20px; background: linear-gradient(140deg, rgba(203,95,62,.35), rgba(118,129,104,.28)), repeating-linear-gradient(135deg, rgba(255,255,255,.08) 0 1px, transparent 1px 18px); }
+      .map-card strong { max-width: 220px; font-family: Georgia, serif; font-size: 28px; line-height: 1.05; }
+      .map-card small { color: #f6d9c0; }
+      .map-card .button { align-self: flex-start; }
+
+      footer { padding: 23px 0 34px; color: #c9b5a7; background: var(--ink); font-size: 12px; }
+      .footer-inner { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 14px; padding-top: 23px; border-top: 1px solid rgba(255,255,255,.13); }
+      .footer-inner p { margin: 0; }
+      .footer-note { color: #f1c475; }
+
+      /* Red-black forno a legna direction */
+      .hero .eyebrow, .gallery-section .eyebrow { color: #f4b45d; }
+      .hero .lead { color: #f5e0db; }
+      .hero .button-secondary:hover { color: var(--ink); background: #fffaf7; }
+      .info-grid { background: #771b25; box-shadow: 0 12px 30px rgba(55, 8, 12, .18); }
+      .paper-section { background: #fffaf7; }
+      .menu-card { background: #fffaf7; border-color: #e1c8c6; }
+      .menu-card:hover { border-color: var(--terracotta); }
+      .service-card { border: 1px solid #e2bdbb; background: #f3d5d1; }
+      .service-card:nth-child(2) { background: #e9dedc; }
+      .service-card:nth-child(3) { background: #edc1c0; }
+      .service-card:nth-child(4) { background: #f0dfd6; }
+      .service-icon { background: var(--ink); }
+      .contact { background: #151013; }
+      .contact-card a.button-light { color: var(--ink); background: #fffaf7; border-color: #fffaf7; }
+      .contact-card a.button-light:hover { color: var(--paper); background: var(--terracotta); border-color: var(--terracotta); }
+      .map-card { background: linear-gradient(140deg, rgba(201,54,50,.58), rgba(21,16,19,.8)), repeating-linear-gradient(0deg, rgba(255,255,255,.07) 0 2px, transparent 2px 24px), repeating-linear-gradient(90deg, transparent 0 78px, rgba(255,255,255,.06) 78px 81px); }
+
+      .gallery-section { color: var(--paper); background: #151013; }
+      .gallery-section .section-heading > p { color: #ead6d2; }
+      .gallery-grid { display: grid; gap: 14px; }
+      .gallery-card { padding: 12px; border: 1px solid rgba(255,255,255,.15); border-radius: 20px; background: #271318; }
+      .gallery-placeholder { min-height: 190px; display: grid; place-items: center; padding: 18px; border-radius: 14px; color: #f8e5df; text-align: center; background: radial-gradient(circle at 50% 58%, #e96d3d 0 11%, #a3282f 29%, transparent 30%), linear-gradient(145deg, rgba(255,255,255,.05), rgba(201,54,50,.38)), repeating-linear-gradient(0deg, rgba(255,255,255,.08) 0 2px, transparent 2px 24px), repeating-linear-gradient(90deg, transparent 0 76px, rgba(255,255,255,.06) 76px 79px), #3b1219; }
+      .gallery-placeholder span { padding: 8px 10px; border: 1px dashed rgba(255,255,255,.42); border-radius: 999px; font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+      .gallery-card h3 { margin: 15px 4px 0; font-family: inherit; font-size: 18px; letter-spacing: -.01em; }
+      .gallery-card p { margin: 5px 4px 3px; color: #d8beb9; font-size: 12px; }
+
+      @media (min-width: 680px) {
+        .container { width: min(1160px, calc(100% - 64px)); }
+        .nav-toggle { display: none; }
+        .nav-links { position: static; display: flex; align-items: center; padding: 0; border: 0; box-shadow: none; background: transparent; }
+        .nav-links a { padding: 8px 9px; font-size: 12px; }
+        .nav-phone { display: inline-flex; min-height: 40px; padding: 9px 13px; border-radius: 999px; color: var(--paper); background: var(--ink); text-decoration: none; font-size: 12px; font-weight: 800; }
+        .hero { padding: 100px 0 84px; }
+        .hero-grid { grid-template-columns: minmax(0, 1fr) minmax(320px, .76fr); gap: 70px; }
+        .info-grid { grid-template-columns: repeat(4, 1fr); }
+        .menu-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .service-grid { grid-template-columns: repeat(2, 1fr); }
+        .gallery-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .about-grid { grid-template-columns: 1.04fr .96fr; }
+        .contact-grid { grid-template-columns: 1.1fr .9fr .9fr; align-items: stretch; }
+      }
+      @media (min-width: 980px) {
+        .nav-links a { font-size: 13px; }
+        .service-grid { grid-template-columns: repeat(4, 1fr); }
+        .service-card { min-height: 257px; }
+        .gallery-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      }
+      @media (max-width: 679px) {
+        .section-heading { display: block; }
+        .section-heading > p { margin-top: 16px; }
+        .photo-placeholder { min-height: 335px; box-shadow: 10px 14px 0 #681b24, var(--shadow); }
+        .hero { padding-top: 54px; }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        html { scroll-behavior: auto; }
+        *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+      }
+    </style>
+  </head>
+  <body>
+    <a class="skip-link" href="#contenuto">Vai al contenuto</a>
+
+    <header class="site-header">
+      <div class="container nav-wrap">
+        <a class="brand" href="#home" aria-label="Pizzeria da Mario, torna all'inizio">
+          <img class="brand-logo" src="logo-pizzeria-da-mario.png" alt="Pizzeria da Mario" />
+        </a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="main-nav" aria-label="Apri il menu di navigazione">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" /></svg>
+        </button>
+        <nav class="nav-links" id="main-nav" aria-label="Navigazione principale">
+          <a href="#home">Home</a>
+          <a href="#menu">Menù</a>
+          <a href="#pizze">Pizze</a>
+          <a href="#servizi">Servizi</a>
+          <a href="#contatti">Contatti</a>
+        </nav>
+        <a class="nav-phone" href="#contatti" aria-label="Vai ai numeri di telefono">CHIAMA</a>
+      </div>
+    </header>
+
+    <main id="contenuto">
+      <section class="hero" id="home">
+        <div class="container hero-grid">
+          <div>
+            <p class="eyebrow">Forno a legna · Idice · San Lazzaro di Savena</p>
+            <h1>Pizzeria da Mario</h1>
+            <p class="lead">Pizze, calzoni e qualcosa di buono da portare a casa. Passa a trovarci, ordina online o chiamaci: il forno è pronto.</p>
+            <div class="hero-actions">
+              <a class="button button-primary" href="#menu">Scopri il menù <span aria-hidden="true">↓</span></a>
+              <a class="button button-secondary" href="tel:0516288321">Chiama per ordinare <span aria-hidden="true">↗</span></a>
+            </div>
+            <div class="hero-note" aria-label="Punti di forza">
+              <span class="mini-badge">Forno a legna</span>
+              <span class="mini-badge">Asporto e consegna</span>
+              <span class="mini-badge">Aperto mar–dom</span>
+            </div>
+          </div>
+          <div class="photo-placeholder" role="img" aria-label="Segnaposto per una foto della pizza o del forno a legna">
+            <div class="placeholder-content">
+              <div class="placeholder-icon" aria-hidden="true">✦</div>
+              <strong>La foto vera<br />arriva dopo.</strong>
+              <span>Segnaposto foto pizza / forno</span>
+            </div>
+            <span class="photo-label">Sostituibile con foto reale</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="info-strip" aria-label="Informazioni rapide">
+        <div class="container info-grid">
+          <div class="info-item"><span>Indirizzo</span><a href="#contatti">Via Emilia 376/A<br />Idice · San Lazzaro di Savena</a></div>
+          <div class="info-item"><span>Orari di oggi</span><strong>12:00–14:00<br />18:00–22:00</strong></div>
+          <div class="info-item"><span>Telefono</span><a href="tel:0516288321">051 628 8321</a><a href="tel:+393534539987">+39 353 453 9987</a></div>
+          <div class="info-item"><span>Ordina online</span><a href="https://www.justeat.it/restaurants-pizzeria-da-marioo-san-lazzaro-di-savena/menu" target="_blank" rel="noreferrer">Just Eat ↗</a><a href="https://deliveroo.it/it/menu/bologna/san-lazzaro/pizzeria-da-mario-san-lazzaro" target="_blank" rel="noreferrer">Deliveroo ↗</a></div>
+        </div>
+      </section>
+
+      <section class="section paper-section" id="menu">
+        <div class="container">
+          <div class="section-heading">
+            <div><p class="eyebrow">Dal forno alla tavola</p><h2>Il nostro menù</h2></div>
+            <p>Una selezione completa di pizze classiche, speciali, calzoni, bibite e birre. Ingredienti e prezzi sono riportati in questa prima bozza e andranno confermati prima della pubblicazione.</p>
+          </div>
+          <div class="menu-toolbar" role="group" aria-label="Filtra il menù">
+            <button class="filter-button" type="button" data-filter="all" aria-pressed="true">Tutto</button>
+            <button class="filter-button" type="button" data-filter="classiche" aria-pressed="false">Pizze classiche</button>
+            <button class="filter-button" type="button" data-filter="speciali" aria-pressed="false">Pizze speciali</button>
+            <button class="filter-button" type="button" data-filter="calzoni" aria-pressed="false">Calzoni</button>
+            <button class="filter-button" type="button" data-filter="bevande" aria-pressed="false">Bibite e birre</button>
+          </div>
+          <div class="menu-grid" id="menu-grid">
+            <article class="menu-card" data-category="classiche"><div><h3>Margherita</h3><p>Pomodoro, mozzarella</p></div><span class="menu-price">6,00 €</span></article>
+            <article class="menu-card" data-category="classiche"><div><h3>Salame piccante</h3><p>Pomodoro, mozzarella, salame piccante</p></div><span class="menu-price">7,00 €</span></article>
+            <article class="menu-card" data-category="classiche"><div><h3>Gorgonzola</h3><p>Pomodoro, mozzarella, gorgonzola</p></div><span class="menu-price">7,00 €</span></article>
+            <article class="menu-card" data-category="classiche"><div><h3>Wurstel</h3><p>Pomodoro, mozzarella, wurstel</p></div><span class="menu-price">7,00 €</span></article>
+            <article class="menu-card" data-category="classiche"><div><h3>Funghi</h3><p>Pomodoro, mozzarella, funghi freschi</p></div><span class="menu-price">7,00 €</span></article>
+            <article class="menu-card" data-category="classiche"><div><h3>Pizza patatina fritta</h3><p>Pomodoro, mozzarella, patatine fritte</p></div><span class="menu-price">7,00 €</span></article>
+            <article class="menu-card" data-category="classiche"><div><h3>Salsiccia</h3><p>Pomodoro, mozzarella, salsiccia</p></div><span class="menu-price">7,00 €</span></article>
+            <article class="menu-card" data-category="classiche"><div><h3>Stracchino &amp; rucola</h3><p>Base bianca, stracchino, rucola</p></div><span class="menu-price">8,00 €</span></article>
+            <article class="menu-card" data-category="classiche"><div><h3>Quattro formaggi</h3><p>Mozzarella, grana, emmenthal, fontina</p></div><span class="menu-price">8,00 €</span></article>
+            <article class="menu-card" data-category="classiche"><div><h3>Quattro stagioni</h3><p>Pomodoro, mozzarella, funghi, salsiccia, cotto, carciofi</p></div><span class="menu-price">8,00 €</span></article>
+            <article class="menu-card" data-category="classiche"><div><h3>Fornarina</h3><p>Olio, origano</p></div><span class="menu-price">4,00 €</span></article>
+            <article class="menu-card" data-category="classiche"><div><h3>Marinara</h3><p>Doppio pomodoro, aglio, origano</p></div><span class="menu-price">5,00 €</span></article>
+            <article class="menu-card" data-category="classiche"><div><h3>Romana</h3><p>Pomodoro, mozzarella, acciughe, capperi, origano</p></div><span class="menu-price">7,00 €</span></article>
+            <article class="menu-card" data-category="classiche"><div><h3>Salame dolce</h3><p>Pomodoro, mozzarella, salame</p></div><span class="menu-price">7,00 €</span></article>
+            <article class="menu-card" data-category="classiche"><div><h3>Napoli</h3><p>Pomodoro, mozzarella, acciughe, origano</p></div><span class="menu-price">7,00 €</span></article>
+            <article class="menu-card" data-category="classiche"><div><h3>Siciliana</h3><p>Pomodoro, acciughe, capperi, olive, origano</p></div><span class="menu-price">7,00 €</span></article>
+            <article class="menu-card" data-category="classiche"><div><h3>Prosciutto cotto</h3><p>Pomodoro, mozzarella, prosciutto cotto</p></div><span class="menu-price">7,00 €</span></article>
+            <article class="menu-card" data-category="classiche"><div><h3>Carciofi</h3><p>Pomodoro, mozzarella, carciofi</p></div><span class="menu-price">7,00 €</span></article>
+            <article class="menu-card" data-category="classiche"><div><h3>Prosciutto crudo</h3><p>Pomodoro, mozzarella, prosciutto crudo in uscita</p></div><span class="menu-price">8,00 €</span></article>
+            <article class="menu-card" data-category="classiche"><div><h3>Tonno</h3><p>Pomodoro, mozzarella, tonno</p></div><span class="menu-price">7,00 €</span></article>
+            <article class="menu-card" data-category="classiche"><div><h3>Verdure</h3><p>Pomodoro, mozzarella, verdure miste</p></div><span class="menu-price">8,00 €</span></article>
+            <article class="menu-card" data-category="classiche"><div><h3>Tonno &amp; cipolla</h3><p>Pomodoro, mozzarella, tonno, cipolla</p></div><span class="menu-price">8,00 €</span></article>
+            <article class="menu-card" data-category="classiche"><div><h3>Saracena</h3><p>Mozzarella all'uscita, pomodoro, basilico</p></div><span class="menu-price">7,00 €</span></article>
+            <article class="menu-card" data-category="classiche"><div><h3>Porcini</h3><p>Pomodoro, mozzarella, funghi porcini</p></div><span class="menu-price">8,00 €</span></article>
+            <article class="menu-card" data-category="classiche"><div><h3>Capricciosa</h3><p>Pomodoro, mozzarella, funghi, cotto, carciofi</p></div><span class="menu-price">8,00 €</span></article>
+
+            <article class="menu-card" data-category="speciali"><div><h3>Esagerata</h3><p>Pomodoro, mozzarella, pancetta, speck, salame, salsiccia</p></div><span class="menu-price">9,00 €</span></article>
+            <article class="menu-card" data-category="speciali"><div><h3>Boscaiola</h3><p>Pomodoro, mozzarella, salsiccia, funghi, cipolla</p></div><span class="menu-price">8,00 €</span></article>
+            <article class="menu-card" data-category="speciali"><div><h3>Rosso blu</h3><p>Pomodoro, mozzarella, prosciutto crudo, rucola, grana</p></div><span class="menu-price">8,50 €</span></article>
+            <article class="menu-card" data-category="speciali"><div><h3>Campagna</h3><p>Mozzarella, friarielli, salsiccia, scamorza</p></div><span class="menu-price">8,00 €</span></article>
+            <article class="menu-card" data-category="speciali"><div><h3>Ortolana</h3><p>Mozzarella, patate, salsiccia, cipolla</p></div><span class="menu-price">8,00 €</span></article>
+            <article class="menu-card" data-category="speciali"><div><h3>Meraviglie</h3><p>Pomodoro, mozzarella, speck, radicchio, grana a scaglie</p></div><span class="menu-price">8,00 €</span></article>
+            <article class="menu-card" data-category="speciali"><div><h3>Emilia</h3><p>Pomodoro, mozzarella, gorgonzola, salame piccante, olive</p></div><span class="menu-price">8,00 €</span></article>
+            <article class="menu-card" data-category="speciali"><div><h3>Idice</h3><p>Mozzarella, friarielli, salsiccia</p></div><span class="menu-price">8,00 €</span></article>
+            <article class="menu-card" data-category="speciali"><div><h3>Mario</h3><p>Bocconcini di bufala in uscita, pomodoro, rucola, aceto balsamico</p></div><span class="menu-price">9,00 €</span></article>
+            <article class="menu-card" data-category="speciali"><div><h3>Alan</h3><p>Mozzarella, gorgonzola, radicchio, noci</p></div><span class="menu-price">8,50 €</span></article>
+            <article class="menu-card" data-category="speciali"><div><h3>Claudia</h3><p>Mozzarella, pancetta in uscita, pomodorini, rucola</p></div><span class="menu-price">9,00 €</span></article>
+            <article class="menu-card" data-category="speciali"><div><h3>Golosa</h3><p>Pomodoro, mozzarella, porcini in uscita, crudo, grana a scaglie</p></div><span class="menu-price">8,00 €</span></article>
+            <article class="menu-card" data-category="speciali"><div><h3>Fiume</h3><p>Pomodoro, mozzarella, salsiccia, cotto, funghi, olive</p></div><span class="menu-price">8,00 €</span></article>
+            <article class="menu-card" data-category="speciali"><div><h3>Pugliese</h3><p>Pomodoro, mozzarella, olive, salame piccante, cipolla, grana</p></div><span class="menu-price">8,00 €</span></article>
+            <article class="menu-card" data-category="speciali"><div><h3>Alpino</h3><p>Pomodoro, mozzarella, speck, brie</p></div><span class="menu-price">8,00 €</span></article>
+            <article class="menu-card" data-category="speciali"><div><h3>Ok</h3><p>Mozzarella, gorgonzola, speck, noci</p></div><span class="menu-price">8,00 €</span></article>
+            <article class="menu-card" data-category="speciali"><div><h3>Mordicchio</h3><p>Mozzarella, radicchio, pancetta, scamorza</p></div><span class="menu-price">8,00 €</span></article>
+            <article class="menu-card" data-category="speciali"><div><h3>Affascinante</h3><p>Pomodoro, mozzarella, porcini, scamorza, speck</p></div><span class="menu-price">8,00 €</span></article>
+            <article class="menu-card" data-category="speciali"><div><h3>Carbonara</h3><p>Mozzarella, pancetta, uova, grana, pepe nero</p></div><span class="menu-price">8,00 €</span></article>
+            <article class="menu-card" data-category="speciali"><div><h3>Jolly</h3><p>Pomodoro, mozzarella, salame, pomodorini, olive</p></div><span class="menu-price">8,00 €</span></article>
+            <article class="menu-card" data-category="speciali"><div><h3>Speciale</h3><p>Pomodoro, mozzarella, funghi, panna, speck</p></div><span class="menu-price">8,00 €</span></article>
+            <article class="menu-card" data-category="speciali"><div><h3>Parmigiana</h3><p>Pomodoro, mozzarella, cotto, melanzane, parmigiano</p></div><span class="menu-price">8,00 €</span></article>
+            <article class="menu-card" data-category="speciali"><div><h3>Tartufata</h3><p>Mozzarella fior di latte, crema di tartufo, funghi freschi, grana a scaglie</p></div><span class="menu-price">9,00 €</span></article>
+
+            <article class="menu-card" data-category="calzoni"><div><h3>Calzone</h3><p>Pomodoro, mozzarella, prosciutto cotto</p></div><span class="menu-price">7,00 €</span></article>
+            <article class="menu-card" data-category="calzoni"><div><h3>Calzone farcito</h3><p>Pomodoro, mozzarella, prosciutto cotto, funghi</p></div><span class="menu-price">8,00 €</span></article>
+            <article class="menu-card" data-category="calzoni"><div><h3>Calzone Napoli</h3><p>Pomodoro, mozzarella, salame piccante, ricotta</p></div><span class="menu-price">8,00 €</span></article>
+
+            <article class="menu-card" data-category="bibite"><div><h3>Coca-Cola 33 cl</h3><p>In lattina</p></div><span class="menu-price">2,00 €</span></article>
+            <article class="menu-card" data-category="bibite"><div><h3>Acqua 50 cl</h3><p>Acqua</p></div><span class="menu-price">1,00 €</span></article>
+            <article class="menu-card" data-category="bibite"><div><h3>Acqua 1,5 l</h3><p>Acqua</p></div><span class="menu-price">1,50 €</span></article>
+            <article class="menu-card" data-category="bibite"><div><h3>Fanta 1,5 l</h3><p>Fanta</p></div><span class="menu-price">4,00 €</span></article>
+            <article class="menu-card" data-category="bibite"><div><h3>Coca-Cola 1,5 l</h3><p>Coca-Cola</p></div><span class="menu-price">4,00 €</span></article>
+            <article class="menu-card" data-category="bibite"><div><h3>Sprite 1,5 l</h3><p>Sprite</p></div><span class="menu-price">4,00 €</span></article>
+
+            <article class="menu-card" data-category="birre"><div><h3>Birra lattina 33 cl</h3><p>Birra</p></div><span class="menu-price">3,00 €</span></article>
+            <article class="menu-card" data-category="birre"><div><h3>Birra Peroni 66 cl</h3><p>Birra</p></div><span class="menu-price">4,00 €</span></article>
+            <article class="menu-card" data-category="birre"><div><h3>Birra Moretti 66 cl</h3><p>Birra</p></div><span class="menu-price">4,00 €</span></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section gallery-section" id="pizze">
+        <div class="container">
+          <div class="section-heading"><div><p class="eyebrow">Dal forno, in foto</p><h2>Le pizze di Mario</h2></div><p>Questa sezione è già pronta per accogliere le foto reali delle pizze: basterà sostituire i riquadri segnaposto e mantenere sotto ogni immagine il nome corrispondente.</p></div>
+          <div class="gallery-grid">
+            <article class="gallery-card"><div class="gallery-placeholder" role="img" aria-label="Segnaposto foto Margherita"><span>Foto da aggiungere</span></div><h3>Margherita</h3><p>Spazio per la foto della pizza</p></article>
+            <article class="gallery-card"><div class="gallery-placeholder" role="img" aria-label="Segnaposto foto Boscaiola"><span>Foto da aggiungere</span></div><h3>Boscaiola</h3><p>Spazio per la foto della pizza</p></article>
+            <article class="gallery-card"><div class="gallery-placeholder" role="img" aria-label="Segnaposto foto Emilia"><span>Foto da aggiungere</span></div><h3>Emilia</h3><p>Spazio per la foto della pizza</p></article>
+            <article class="gallery-card"><div class="gallery-placeholder" role="img" aria-label="Segnaposto foto Quattro stagioni"><span>Foto da aggiungere</span></div><h3>Quattro stagioni</h3><p>Spazio per la foto della pizza</p></article>
+            <article class="gallery-card"><div class="gallery-placeholder" role="img" aria-label="Segnaposto foto Mario"><span>Foto da aggiungere</span></div><h3>Mario</h3><p>Spazio per la foto della pizza</p></article>
+            <article class="gallery-card"><div class="gallery-placeholder" role="img" aria-label="Segnaposto foto Tartufata"><span>Foto da aggiungere</span></div><h3>Tartufata</h3><p>Spazio per la foto della pizza</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="servizi">
+        <div class="container">
+          <div class="section-heading"><div><p class="eyebrow">Scegli come gustarla</p><h2>Tu ordina,<br />al resto pensiamo noi.</h2></div><p>Che sia una pizza da portare via o una serata senza cucinare, trovi la formula giusta per te.</p></div>
+          <div class="service-grid">
+            <article class="service-card"><div class="service-icon" aria-hidden="true">↗</div><h3>Asporto</h3><p>Ordina per telefono e passa a ritirare la tua pizza calda.</p><strong>Ritiro in pizzeria</strong></article>
+            <article class="service-card"><div class="service-icon" aria-hidden="true">⌂</div><h3>Consegna a domicilio</h3><p>Portiamo la pizza a casa tua durante il servizio serale.</p><strong>Idice 1 €<br />San Lazzaro di Savena · Ozzano · Castel de' Britti 2 €</strong></article>
+            <article class="service-card"><div class="service-icon" aria-hidden="true">●</div><h3>Consumazione sul posto</h3><p>È possibile fermarsi per una consumazione limitata sul posto.</p><strong>Chiedi disponibilità</strong></article>
+            <article class="service-card"><div class="service-icon" aria-hidden="true">+</div><h3>Ordina online</h3><p>Scegli il tuo servizio preferito e ordina direttamente online.</p><div class="hero-actions" style="margin-top: 14px"><a href="https://www.justeat.it/restaurants-pizzeria-da-marioo-san-lazzaro-di-savena/menu" target="_blank" rel="noreferrer">Just Eat ↗</a><span aria-hidden="true">·</span><a href="https://deliveroo.it/it/menu/bologna/san-lazzaro/pizzeria-da-mario-san-lazzaro" target="_blank" rel="noreferrer">Deliveroo ↗</a></div></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section contact" id="contatti">
+        <div class="container">
+          <p class="eyebrow">Dove siamo · Contatti</p>
+          <h2>Ci vediamo in Via Emilia.</h2>
+          <div class="contact-grid">
+            <div class="contact-card"><span>Indirizzo</span><p>Via Emilia 376/A<br />Idice, 40068<br />San Lazzaro di Savena (BO)</p><a class="button button-light" style="margin-top: 18px" href="https://www.google.com/maps/search/?api=1&amp;query=Via+Emilia+376%2FA%2C+Idice%2C+San+Lazzaro+di+Savena%2C+BO" target="_blank" rel="noreferrer">Indicazioni stradali ↗</a></div>
+            <div class="contact-card"><span>Chiamaci</span><a href="tel:0516288321">051 628 8321</a><a href="tel:+393534539987">+39 353 453 9987</a><span style="margin-top: 21px">Orari</span><table class="hours"><tbody><tr><td>Lunedì</td><td class="closed">Chiuso</td></tr><tr><td>Mar–Dom</td><td>12–14 · 18–22</td></tr></tbody></table></div>
+            <div class="map-card"><div><strong>Passa a trovarci a Idice.</strong><small style="display: block; margin-top: 12px">Sulla Via Emilia</small></div><a class="button button-primary" href="https://www.google.com/maps/search/?api=1&amp;query=Via+Emilia+376%2FA%2C+Idice%2C+San+Lazzaro+di+Savena%2C+BO" target="_blank" rel="noreferrer">Apri Google Maps ↗</a></div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container footer-inner"><p>© Pizzeria da Mario · Idice, San Lazzaro di Savena</p><p class="footer-note">Ultimo aggiornamento: 8 ottobre 2026 · 22:36</p></div>
+    </footer>
+
+    <script>
+      const navToggle = document.querySelector('.nav-toggle');
+      const nav = document.querySelector('#main-nav');
+      navToggle?.addEventListener('click', () => {
+        const open = nav.classList.toggle('is-open');
+        navToggle.setAttribute('aria-expanded', String(open));
+        navToggle.setAttribute('aria-label', open ? 'Chiudi il menu di navigazione' : 'Apri il menu di navigazione');
+      });
+      nav?.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => {
+        nav.classList.remove('is-open');
+        navToggle?.setAttribute('aria-expanded', 'false');
+        navToggle?.setAttribute('aria-label', 'Apri il menu di navigazione');
+      }));
+
+      const filterButtons = document.querySelectorAll('[data-filter]');
+      const menuGrid = document.querySelector('#menu-grid');
+      const menuCards = Array.from(menuGrid.querySelectorAll('.menu-card'));
+      const popularFirst = ['Emilia', 'Meraviglie', 'Ortolana', 'Campagna', 'Rosso blu', 'Boscaiola', 'Esagerata', 'Quattro stagioni', 'Quattro formaggi', 'Stracchino & rucola'];
+      [...popularFirst].reverse().forEach((name) => {
+        const card = menuCards.find((item) => item.querySelector('h3')?.textContent.trim() === name);
+        if (card) menuGrid.prepend(card);
+      });
+      filterButtons.forEach((button) => button.addEventListener('click', () => {
+        const filter = button.dataset.filter;
+        filterButtons.forEach((item) => item.setAttribute('aria-pressed', String(item === button)));
+        menuCards.forEach((card) => {
+          const isBeverage = filter === 'bevande' && ['bibite', 'birre'].includes(card.dataset.category);
+          card.hidden = filter !== 'all' && card.dataset.category !== filter && !isBeverage;
+        });
+      }));
+    </script>
+  </body>
+</html>
